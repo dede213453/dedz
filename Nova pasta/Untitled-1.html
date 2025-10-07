@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beleza e Estranhamento</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      color: #fff;
+      background: linear-gradient(120deg, #1a1a1a, #000, #24243e, #302b63, #0f0c29);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      position: relative;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h1 {
+      font-size: 2rem;
+      text-align: center;
+      margin: 0 20px;
+      opacity: 1;
+      transition: opacity 1s ease;
+      text-shadow: 0 0 20px rgba(255,255,255,0.2);
+      z-index: 2;
+    }
+
+    button {
+      margin-top: 40px;
+      padding: 12px 28px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #fff, #ddd);
+      color: #000;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      z-index: 2;
+    }
+
+    button:hover {
+      background: #999;
+      transform: scale(1.05);
+    }
+
+    .word {
+      position: absolute;
+      font-size: 2.5rem;
+      font-weight: 600;
+      opacity: 0;
+      color: rgba(255,255,255,0.8);
+      animation: fadeFloat 3s ease forwards;
+      text-shadow: 0 0 25px rgba(255,255,255,0.6);
+    }
+
+    @keyframes fadeFloat {
+      0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.9) rotate(0deg);
+      }
+      20% {
+        opacity: 1;
+        transform: translateY(-10px) scale(1) rotate(3deg);
+      }
+      70% {
+        opacity: 0.9;
+        transform: translateY(-30px) scale(1.05) rotate(-3deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-60px) scale(1.1) rotate(5deg);
+      }
+    }
+
+    #final-question {
+      font-size: 2.2rem;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 2s ease;
+      margin: 20px;
+      letter-spacing: 1.5px;
+      text-shadow: 0 0 15px rgba(255,255,255,0.5);
+      z-index: 2;
+    }
+
+    /* Partículas luminosas */
+    .particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: rgba(255,255,255,0.6);
+      border-radius: 50%;
+      animation: floatUp 8s linear infinite;
+      filter: blur(2px);
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 0.2;
+      }
+      50% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    /* Marca d'água */
+    .watermark {
+      position: fixed;
+      bottom: 10px;
+      right: 15px;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.25);
+      letter-spacing: 2px;
+      font-weight: 300;
+      pointer-events: none;
+      user-select: none;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 id="main-text">E se a beleza estivesse também no que causa estranhamento?</h1>
+  <button id="discover-btn">Descubra</button>
+
+  <!-- Áudio do projeto -->
+  <audio id="audio" src="dedz.mp3"></audio>
+
+  <div id="final-question">E para você, o que é beleza?</div>
+  <div class="watermark">dedz</div>
+
+  <script>
+    const button = document.getElementById('discover-btn');
+    const mainText = document.getElementById('main-text');
+    const audio = document.getElementById('audio');
+    const finalQuestion = document.getElementById('final-question');
+    const words = ["Estranho", "Falha", "Carne", "Forma", "Belo"];
+
+    // Criar partículas suaves no fundo
+    for (let i = 0; i < 40; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      particle.style.left = Math.random() * 100 + 'vw';
+      particle.style.animationDuration = (6 + Math.random() * 6) + 's';
+      particle.style.animationDelay = Math.random() * 5 + 's';
+      document.body.appendChild(particle);
+    }
+
+    // Ação principal
+    button.addEventListener('click', () => {
+      button.style.display = 'none';
+      mainText.style.opacity = '0';
+      audio.play();
+
+      let delay = 1000;
+      words.forEach((word) => {
+        setTimeout(() => {
+          const span = document.createElement('div');
+          span.classList.add('word');
+          span.textContent = word;
+          span.style.left = Math.random() * 70 + 10 + '%';
+          span.style.top = Math.random() * 70 + 10 + '%';
+          span.style.color = `hsl(${Math.random() * 360}, 100%, 80%)`;
+          document.body.appendChild(span);
+          setTimeout(() => span.remove(), 3000);
+        }, delay);
+        delay += 2500;
+      });
+
+      setTimeout(() => {
+        finalQuestion.style.opacity = '1';
+      }, delay + 1000);
+    });
+  </script>
+
+</body>
+</html>
